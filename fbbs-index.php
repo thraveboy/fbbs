@@ -21,20 +21,6 @@ body {
 ?>
 
 <?php
-   $name = '(anonymous - type "name '. '(yourname)' . '")';
-   if ($ip_name) {
-     $name = $ip_name;
-   }
-   echo '<p>';
-   echo '[' . $_SERVER['REMOTE_ADDR']  . ' - ' . $name . '] ';
-   echo '</p>';
-?>
-
-<FORM NAME="form1" METHOD="get" ACTION="">
-    <INPUT TYPE="Text" VALUE="" NAME="command" SIZE="80" autofocus>
-</FORM>
-
-<?php
   $exploded_previous_command = explode(" ", $previous_command, 2);
   $arg_count = count($exploded_previous_command);
   if ($arg_count == 1) {

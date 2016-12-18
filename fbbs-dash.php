@@ -15,17 +15,17 @@ body {
   require 'api.php';
 
   $previous_command = $_GET['command'];
-  echo '<p>';
-  echo '<div id="previous_command">';
+  echo '<div id="previous_command" hidden>';
   print($previous_command);
   echo '</div>';
-  echo '</p>';
 ?>
 
-<FORM NAME="form1" METHOD="GET" ACTION="dash.php">
+<p>
+<FORM NAME="form1" METHOD="GET" ACTION="fbbs-dash.php">
     <INPUT TYPE="Text" VALUE="" id="command" NAME="command" SIZE="80" autofocus
            onkeyup="showDash(this.value)">
 </FORM>
+</p>
 
 <p>Dash
 <br>
