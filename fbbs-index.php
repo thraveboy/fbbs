@@ -12,13 +12,27 @@ body {
 <body>
 <?php
   $_LOCAL_API_CALLS = 1;
-  require 'api.php';
+  require 'fbbs-api.php';
 
   $previous_command = $_GET['command'];
   echo '<p>';
   print($previous_command);
   echo '</p>';
 ?>
+
+<?php
+   $name = '(anonymous - type "name '. '(yourname)' . '")';
+   if ($ip_name) {
+     $name = $ip_name;
+   }
+   echo '<p>';
+   echo '[' . $_SERVER['REMOTE_ADDR']  . ' - ' . $name . '] ';
+   echo '</p>';
+?>
+
+<FORM NAME="form1" METHOD="get" ACTION="">
+    <INPUT TYPE="Text" VALUE="" NAME="command" SIZE="80" autofocus>
+</FORM>
 
 <?php
   $exploded_previous_command = explode(" ", $previous_command, 2);

@@ -12,7 +12,7 @@ body {
 <body>
 <?php
   $_LOCAL_API_CALLS = 1;
-  require 'api.php';
+  require 'fbbs-api.php';
 
   $previous_command = $_GET['command'];
   echo '<div id="previous_command" hidden>';
