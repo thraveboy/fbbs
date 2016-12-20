@@ -36,6 +36,7 @@ body {
 <script>
 
 var prev_cmd_val = document.getElementById("previous_command").innerText;
+prev_cmd_val = prev_cmd_val.split(" ")[0];
 
 function showDash(str) {
   var xhttp;
