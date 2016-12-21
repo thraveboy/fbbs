@@ -43,7 +43,7 @@
   if ($arg_count == 1) {
     $table_name = $db->escapeString($exploded_previous_command[0]);
     $query_string = "SELECT id, ip, value, timestamp from " . $table_name .
-                    " ORDER BY timestamp DESC LIMIT 10";
+                    " ORDER BY timestamp DESC LIMIT 20";
     $results = $db->query($query_string);
     if (!empty($results)) {
       $outputObject->append('"value":[{');
