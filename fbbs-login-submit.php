@@ -102,7 +102,7 @@ input {
                          'VALUES ("'. $cleanusername . '", "' .
                          $passwordhashed . '", "'. $request_time . '")';
          $db->exec($create_query);
-         echo 'created user account for ' . $usernamepost . '.....<br>';
+         echo 'created user account for ' . $cleanusername . '.....<br>';
       }
       else {
          echo '....password and password again did not match';
