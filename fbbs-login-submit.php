@@ -46,10 +46,10 @@ input {
 
   if ($username_emptyq || $password_emptyq) {
     if ($username_emptyq) {
-      echo 'no user:';
+      echo '.....no username<br>';
     }
     if ($password_emptyq) {
-      echo 'no password:';
+      echo '...no password<br>';
     }
   }
   else {
@@ -67,54 +67,48 @@ input {
     if (!empty($results_user_info)) {
       $user_info_array = $results_user_info->fetchArray(SQLITE3_ASSOC);
       if ($user_info_array) {
-        var_dump($user_info_array);
         $retrievedusername = $user_info_array["username"];
         $retrievedpassword = $user_info_array["password"];
         if (password_verify($passwordpost, $retrievedpassword)) {
-          echo 'password matched';
+          echo 'password matched...<br>';
           $auth_token = bin2hex(openssl_random_pseudo_bytes(16));
-          echo 'token generated';
+          echo 'token generated....<br>';
           $auth_insert_query = 'REPLACE INTO auth_tokens ' .
                                '(username, token, expire, timestamp) ' .
                                'VALUES ("' . $retrievedusername . '", "'.
                                $auth_token . '", "", "' . $request_time .
                                '")';
           $db->exec($auth_insert_query);
-          echo $db->lastErrorMsg();
-          echo 'auth token generated : ' . $auth_token . '<br>';
+          echo '<div id="authToken" style="visibility: hidden">';
+          echo $auth_token;
+          echo '</div>';
         }
         else {
-          echo "password didn't match";
+          echo ".........password didn't match";
         }
 
         $userfound = TRUE;
       }
-      echo 'HERE!';
+    }
+    if (!$userfound) {
+      echo '.....username not found<br>';
     }
     if (!$userfound && !$passwordagain_emptyq) {
-      echo 'attempting to create new account for ' . $usernamepost . '<br>';
+      echo 'attempting to create new account for ' . $usernamepost . '..<br>';
       $passwordhashed = password_hash($passwordpost, PASSWORD_DEFAULT);
       if (password_verify($passwordagainpost, $passwordhashed)) {
-         echo 'going to create new account for ' . $cleanusername . ':' . $passwordhashed . '-';
          $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
          $create_query = 'INSERT INTO users (username, password, timestamp) ' .
                          'VALUES ("'. $cleanusername . '", "' .
                          $passwordhashed . '", "'. $request_time . '")';
-         echo '<br>' . $create_query . '<br>';
          $db->exec($create_query);
-         echo $db->lastErrorMsg();
-         $insert_id = $db->lastInsertRowid();
-         echo 'created user id ' . $insert_id . '<br>';
+         echo 'created user account for ' . $usernamepost . '.....<br>';
       }
       else {
-         echo 'password and password again did not match';
+         echo '....password and password again did not match';
       }
-      echo 'THERE!';
     }
   }
-  echo $usernamepost . ":";
-  echo $passwordpost . ":";
-  echo $passwordagainpost . ":";
 ?>
 
 <p>
