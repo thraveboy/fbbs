@@ -63,21 +63,52 @@ input {
                         $cleanusername . '" ORDER BY timestamp DESC LIMIT 1';
     $results_user_info = $db->query($user_info_query);
     $userfound = FALSE;
+
     if (!empty($results_user_info)) {
       $user_info_array = $results_user_info->fetchArray(SQLITE3_ASSOC);
       if ($user_info_array) {
         var_dump($user_info_array);
         $retrievedusername = $user_info_array["username"];
         $retrievedpassword = $user_info_array["password"];
-        $retrievedsalt = $user_info_array["salt"];
+        if (password_verify($passwordpost, $retrievedpassword)) {
+          echo 'password matched';
+          $auth_token = bin2hex(openssl_random_pseudo_bytes(16));
+          echo 'token generated';
+          $auth_insert_query = 'REPLACE INTO auth_tokens ' .
+                               '(username, token, expire, timestamp) ' .
+                               'VALUES ("' . $retrievedusername . '", "'.
+                               $auth_token . '", "", "' . $request_time .
+                               '")';
+          $db->exec($auth_insert_query);
+          echo $db->lastErrorMsg();
+          echo 'auth token generated : ' . $auth_token . '<br>';
+        }
+        else {
+          echo "password didn't match";
+        }
+
         $userfound = TRUE;
       }
       echo 'HERE!';
     }
-    if (!$passwordagain_emptyq) {
+    if (!$userfound && !$passwordagain_emptyq) {
       echo 'attempting to create new account for ' . $usernamepost . '<br>';
       $passwordhashed = password_hash($passwordpost, PASSWORD_DEFAULT);
-      var_dump($passwordhashed);
+      if (password_verify($passwordagainpost, $passwordhashed)) {
+         echo 'going to create new account for ' . $cleanusername . ':' . $passwordhashed . '-';
+         $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
+         $create_query = 'INSERT INTO users (username, password, timestamp) ' .
+                         'VALUES ("'. $cleanusername . '", "' .
+                         $passwordhashed . '", "'. $request_time . '")';
+         echo '<br>' . $create_query . '<br>';
+         $db->exec($create_query);
+         echo $db->lastErrorMsg();
+         $insert_id = $db->lastInsertRowid();
+         echo 'created user id ' . $insert_id . '<br>';
+      }
+      else {
+         echo 'password and password again did not match';
+      }
       echo 'THERE!';
     }
   }
