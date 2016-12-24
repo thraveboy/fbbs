@@ -4,7 +4,7 @@
 <style>
 body, input {
     font-family: monospace;
-    font-size: xx-small;
+    font-size: small;
     background-color: blue;
     color: cyan;
 }
@@ -48,7 +48,7 @@ input {
 <br>
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-login-submit.php">
 username:
-<INPUT TYPE="Text" VALUE="" id="username" NAME="command" SIZE="40" autofocus>
+<INPUT TYPE="Text" VALUE="" id="username" NAME="username" SIZE="40" autofocus>
 <br>
 password:
 <INPUT TYPE="Text" VALUE="" id="password" NAME="password" SIZE="40" autofocus>

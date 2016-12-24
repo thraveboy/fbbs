@@ -4,7 +4,7 @@
 <style>
 body, input {
     font-family: monospace;
-    font-size: xx-small;
+    font-size: small;
     background-color: blue;
     color: cyan;
 }
