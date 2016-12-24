@@ -79,6 +79,9 @@ input {
                                $auth_token . '", "", "' . $request_time .
                                '")';
           $db->exec($auth_insert_query);
+          echo '<div id="username" style="visibility: hidden">';
+          echo $cleanusername;
+          echo '</div>';
           echo '<div id="authToken" style="visibility: hidden">';
           echo $auth_token;
           echo '</div>';
@@ -110,7 +113,18 @@ input {
     }
   }
 ?>
+<script>
+  var username = document.getElementById("username").innerHTML;
+  var token = document.getElementById("authToken").innerHTML;
 
+  if (username && token) {
+    document.cookie = "username = " + username;
+    document.cookie = "authToken = " + token;
+    window.location = "fbbs-dash.php";
+  }
+  document.write(username);
+  document.write(token);
+</script>
 <p>
 |\______
 <br>
