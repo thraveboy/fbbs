@@ -19,6 +19,12 @@ input {
     outline-width-left: 0px;
     outline-width-right: 0px;
     outline-color: cyan;
+    color: cyan;
+}
+
+input[type=submit] {
+    outline-color: cyan;
+    background-color: blue;
 }
 
 </style>
@@ -27,9 +33,12 @@ input {
 <body>
 <?php
   $_LOCAL_API_CALLS = 1;
-  require 'fbbs-api.php';
 
   $previous_cmd_trim = trim($_GET['command']);
+  $_GET['command'] = $previous_cmd_trim;
+
+  require 'fbbs-api.php';
+
   $previous_command = explode(" ", $previous_cmd_trim)[0];
   echo '<div id="previous_command" hidden>';
   print($previous_command);
@@ -122,6 +131,28 @@ String.prototype.hashCode = function(){
 var prev_cmd_val = document.getElementById("previous_command").innerText;
 prev_cmd_val = prev_cmd_val.split(" ")[0];
 
+function messageOutput(msgObj) {
+  var return_html = "";
+  if (msgObj) {
+    if (msgObj["value"] !=  undefined) {
+      return_html += msgObj["value"];
+    }
+    if (msgObj["timestamp"] != undefined) {
+      var current_time = (new Date()).getTime();
+      var dashtime = ((current_time/1000) - msgObj["timestamp"]) / 3600;
+      return_html += (Math.trunc((dashtime*1000)))/1000 + " hours ago ";
+    }
+    if (msgObj["ip"] != undefined) {
+      return_html += msgObj["ip"].hashCode() + " ";
+    }
+    if (msgObj["id"] != undefined) {
+      return_html += msgObj["id"] + " ";
+    }
+
+  }
+  return return_html;
+}
+
 function showDash(str_full) {
   var xhttp;
   var str_trim = str_full.trim();
@@ -140,33 +171,19 @@ function showDash(str_full) {
       var current_time = (new Date()).getTime();
       var jsonresponseobj = JSON.parse(this.responseText).value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
-        var dash_entries = jsonresponseobj[key].length;
-        for (var entry_index=0; entry_index < dash_entries; entry_index++) {
-          var dash_entry = jsonresponseobj[key][entry_index];
-          Object.keys(dash_entry).forEach(function(key2,index2) {
-             var dash_val = dash_entry[key2];
-             var output_val = '';
-             switch(key2) {
-               case 'value':
-                 output_val = '<b>' + dash_val + '</b> ';
-                 break;
-               case 'timestamp':
-                 var dashtime = ((current_time/1000) - dash_val) / 3600;
-                 output_val = (Math.trunc((dashtime*1000)))/1000 + ' hours ago';
-                 break;
-               case 'ip':
-                 output_val = '[' + dash_val.hashCode() + '] ';
-                 break;
-               case 'id':
-                 output_val = '(@' + dash_val + ')';
-                 break;
-               default:
-                 break;
-             }
-             document.getElementById("dash").innerHTML += output_val;
-            });
-        };
-        document.getElementById("dash").innerHTML += '<br>';
+        var array_obj = jsonresponseobj[key];
+        var entry_obj = new Object();
+        for (var i=0; i < array_obj.length; i++) {
+          var keyval_obj = array_obj[i];
+          Object.keys(keyval_obj).forEach(function(key,index) {
+            Object.keys(keyval_obj).forEach(function(id,idx) {
+                entry_obj[id] = keyval_obj[id];
+              });
+          });
+        }
+        var entry_output = messageOutput(entry_obj);
+
+        document.getElementById("dash").innerHTML += entry_output + "<br>";
       });
     }
   }
