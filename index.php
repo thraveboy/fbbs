@@ -44,6 +44,14 @@ input {
 <br>
 **------------------------**
 <br>
+*-a hacker's open, paradise.
+<br>
+*-explore..type freely.:).**
+<br>
+*there are no mistakes....**
+<br>
+*.....just discoveries.:).**
+<br>
 ****************************
 <br>
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-login-submit.php">
