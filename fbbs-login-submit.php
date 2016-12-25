@@ -73,10 +73,11 @@ input {
           echo 'password matched...<br>';
           $auth_token = bin2hex(openssl_random_pseudo_bytes(16));
           echo 'token generated....<br>';
+          $auth_encode = password_hash($auth_token, PASSWORD_DEFAULT);
           $auth_insert_query = 'REPLACE INTO auth_tokens ' .
                                '(username, token, expire, timestamp) ' .
                                'VALUES ("' . $retrievedusername . '", "'.
-                               $auth_token . '", "", "' . $request_time .
+                               $auth_encode . '", "", "' . $request_time .
                                '")';
           $db->exec($auth_insert_query);
           echo '<div id="username" style="visibility: hidden">';
@@ -132,9 +133,9 @@ input {
 <br>
 [o]----[o]---=>>>>>>>
 <br>
--------------->>>>>>>>>
+----Velcome------->>>>>>>>>
 <br>
-****************************
+*************to*************
 <br>
 ** Fury's Fortress (fbbs) **
 <br>

@@ -33,8 +33,38 @@ input {
   echo '<div id="previous_command" hidden>';
   print($previous_command);
   echo '</div>';
+  $userauthorized = FALSE;
+  $username = $_COOKIE['username'];
+  $token = $_COOKIE['authToken'];
+  if (($username != "") && ($token != "")) {
+    class FDBUSER extends SQLite3
+    {
+      function __construct()
+      {
+        $this->open('fbbs-user.db');
+      }
+    }
+    $fdbuser = new FDBUSER();
+    if (!$fdbuser) {
+      echo $fdbuser->lastErrorMsg();
+    }
+    $auth_query = 'SELECT token FROM auth_tokens where username = "' .
+                  $username . '"';
+    $auth_result = $fdbuser->query($auth_query);
+    if (!empty($auth_result)) {
+      $auth_array = $auth_result->fetchArray(SQLITE3_ASSOC);
+      $auth_encoded = $auth_array['token'];
+      if (!empty($auth_encoded)) {
+        if (password_verify($token, $auth_encoded)) {
+          $userauthorized = TRUE;
+        }
+      }
+    }
+  }
+  if (!$userauthorized) {
+    header("Location: fbbs-login.php");
+  }
 ?>
-
 <p>
 ____
 <br>
@@ -54,13 +84,9 @@ ____
 <br>
  ===========
 <br>
- -=======---
-<br>
- ----===---
-<br>
- -----==-----
-
-<p>
+<?php
+  echo '[->>' . $username . '<<-]';
+?>
 <FORM NAME="form1" METHOD="GET" ACTION="fbbs-dash.php">
     <INPUT TYPE="Text" VALUE="" id="command" NAME="command" SIZE="80" autofocus>
 </FORM>
