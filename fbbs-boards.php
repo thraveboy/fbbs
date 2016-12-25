@@ -131,11 +131,27 @@ String.prototype.hashCode = function(){
 var prev_cmd_val = document.getElementById("previous_command").innerText;
 prev_cmd_val = prev_cmd_val.split(" ")[0];
 
+function funPrefixes(prefix_length = 5) {
+  var char_set = ["_", "_", "_", "_", "_", "_", "_", "_",
+                  "_", "_", "_", "_", "_", "_", "|", "O", "0", "o"];
+
+
+  var return_string = "";
+  for (var i=0; i<prefix_length; i++) {
+    return_string += char_set[Math.floor(Math.random() * char_set.length)];
+  }
+  return return_string;
+}
+
 function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
+    if (msgObj["id"] != undefined) {
+      return_html += "[" + funPrefixes(4) + "] " + msgObj["id"] + " ";
+    }
     if (msgObj["value"] !=  undefined) {
-      return_html += msgObj["value"];
+      return_html += "[" + funPrefixes(4) + "] <b><u>" + msgObj["value"] +
+                     "</u></b>  ";
     }
     if (msgObj["timestamp"] != undefined) {
       var current_time = (new Date()).getTime();
@@ -143,12 +159,24 @@ function messageOutput(msgObj) {
       return_html += (Math.trunc((dashtime*1000)))/1000 + " hours ago ";
     }
     if (msgObj["ip"] != undefined) {
-      return_html += msgObj["ip"].hashCode() + " ";
+      var hashed_ip = "" + msgObj["ip"].hashCode();
+      hashed_ip = hashed_ip.replace('-', '>');
+      hashed_ip = hashed_ip.replace(/[0-9]/g, function (c) {
+          return {
+            '0': 'o',
+            '1': 'O',
+            '2': '.',
+            '3': '_',
+            '4': '-',
+            '5': '=',
+            '6': ':',
+            '7': '|',
+            '8': '^',
+            '9': '~'
+          }[c]
+        });
+      return_html += "[" + hashed_ip + "]";
     }
-    if (msgObj["id"] != undefined) {
-      return_html += msgObj["id"] + " ";
-    }
-
   }
   return return_html;
 }
