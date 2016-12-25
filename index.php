@@ -51,12 +51,13 @@ username:
 <INPUT TYPE="Text" VALUE="" id="username" NAME="username" SIZE="40" autofocus>
 <br>
 password:
-<INPUT TYPE="Text" VALUE="" id="password" NAME="password" SIZE="40" autofocus>
+<INPUT TYPE="Password" VALUE="" id="password" NAME="password" SIZE="40" autofocus>
 <br>
 password again (if new user):
-<INPUT TYPE="Text" VALUE="" id="password-again" NAME="password-again" SIZE="40" autofocus>
+<INPUT TYPE="Password" VALUE="" id="password-again" NAME="password-again" SIZE="40" autofocus>
 <div class="userpassDiv" />
-<input type="submit" style="display:none" />
+<br>
+<input type="submit" value="\.enter./" />
 </FORM>
 </p>
 

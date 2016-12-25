@@ -121,7 +121,7 @@ input {
   if (username && token) {
     document.cookie = "username = " + username;
     document.cookie = "authToken = " + token;
-    window.location = "fbbs-dash.php";
+    window.location = "fbbs-boards.php";
   }
   document.write(username);
   document.write(token);
@@ -148,12 +148,13 @@ username:
 <INPUT TYPE="Text" VALUE="" id="username" NAME="username" SIZE="40" autofocus>
 <br>
 password:
-<INPUT TYPE="Text" VALUE="" id="password" NAME="password" SIZE="40" autofocus>
+<INPUT TYPE="Password" VALUE="" id="password" NAME="password" SIZE="40">
 <br>
 password again (if new user):
-<INPUT TYPE="Text" VALUE="" id="password-again" NAME="password-again" SIZE="40" autofocus>
+<INPUT TYPE="Password" VALUE="" id="password-again" NAME="password-again" SIZE="40">
 <div class="userpassDiv" />
-<input type="submit" style="display:none" />
+<br>
+<input type="submit" value="\._enter_./" />
 </FORM>
 </p>
 
