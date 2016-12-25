@@ -29,7 +29,8 @@ input {
   $_LOCAL_API_CALLS = 1;
   require 'fbbs-api.php';
 
-  $previous_command = $_GET['command'].split(" ")[0];
+  $previous_cmd_trim = trim($_GET['command']);
+  $previous_command = explode(" ", $previous_cmd_trim)[0];
   echo '<div id="previous_command" hidden>';
   print($previous_command);
   echo '</div>';
@@ -62,7 +63,7 @@ input {
     }
   }
   if (!$userauthorized) {
-    header("Location: fbbs-login.php");
+    header("Location: index.php");
   }
 ?>
 <p>
@@ -82,13 +83,24 @@ ____
 <br>
 *******//
 <br>
- ===========
-<br>
+===========
+<FORM NAME="form1" METHOD="GET" ACTION="fbbs-boards.php">
+    board name:
 <?php
-  echo '[->>' . $username . '<<-]';
+  echo '<INPUT TYPE="Text" VALUE="' . $previous_command  . ' " ';
+  echo 'id="command" NAME="command" SIZE="20" autofocus>';
 ?>
-<FORM NAME="form1" METHOD="GET" ACTION="fbbs-dash.php">
-    <INPUT TYPE="Text" VALUE="" id="command" NAME="command" SIZE="80" autofocus>
+    <INPUT TYPE="Submit" Value="|/\enter/\|">
+</FORM>
+<br>
+<FORM NAME="postmsg" METHOD="GET" ACTION="fbbs-boards.php">
+    post message=>
+<?php
+  echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' [';
+  echo $username . '] "';
+  echo 'id="message" NAME="command" SIZE="60">';
+?>
+  <INPUT TYPE="Submit" Value="<-enter|" SIZE="7">
 </FORM>
 </p>
 <p>
@@ -112,7 +124,8 @@ prev_cmd_val = prev_cmd_val.split(" ")[0];
 
 function showDash(str_full) {
   var xhttp;
-  var str = str_full.split(" ")[0];
+  var str_trim = str_full.trim();
+  var str = str_trim.split(" ")[0];
   if (str.length == 0) {
     document.getElementById("dash").innerHTML = "=-=";
     return;
