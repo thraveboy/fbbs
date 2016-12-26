@@ -19,7 +19,7 @@ sqite3 fbbs-user.db
 CREATE TABLE users(id INTEGER PRIMARY KEY ASC, username TEXT UNIQUE NOT NULL, password TEXT NOT NULL, timestamp INTEGER NOT NULL);
 CREATE INDEX username_idx ON users(username);
 CREATE TABLE auth_tokens(username TEXT PRIMARY KEY NOT NULL, token TEXT NOT NULL, expire TEXT NOT NULL, timestamp INTEGER NOT NULL);
-CREATE TABLE user_auth_log(username TEXT PRIMARY KEY NOT NULL, token TEXT NOT NULL, timestamp INTEGER NOT NULL);
+CREATE TABLE user_auth_log(id INTEGER PRIMARY KEY NOT NULL, username TEXT NOT NULL, token TEXT NOT NULL, timestamp INTEGER NOT NULL);
 
 Create private database for modules in sqlite:
 

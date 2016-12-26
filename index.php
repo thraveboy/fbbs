@@ -38,21 +38,25 @@ input {
 <br>
 -------------->>>>>>>>>
 <br>
-****************************
+**************************
 <br>
-** Fury's Fortress (fbbs) **
-<br>
-**------------------------**
-<br>
-*-a hacker's open, paradise.
-<br>
-*-explore..type freely.:).**
-<br>
-*there are no mistakes....**
-<br>
-*.....just discoveries.:).**
+** Fury's Fortress (fbbs) *
 <br>
 ****************************
+<br>
+*-a hacker's open, paradise.*
+<br>
+*-explore..type freely.:).****
+<br>
+*there are no mistakes....******
+<br>
+*.....just discoveries.:).*******
+<br>
+***********************************
+<br>
+*https://github.com/thraveboy/fbbs**
+<br>
+*************************************
 <br>
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-login-submit.php">
 username:
