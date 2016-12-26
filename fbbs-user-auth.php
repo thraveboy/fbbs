@@ -15,6 +15,7 @@
       if (!$fdbuser) {
         echo $fdbuser->lastErrorMsg();
       }
+      $username = $fdbuser->escapeString($username);
       $auth_query = 'SELECT token FROM auth_tokens where username = "' .
                     $username . '"';
       $auth_result = $fdbuser->query($auth_query);
@@ -29,6 +30,12 @@
       }
     }
     if ($userauthorized) {
+      $request_time = $fdbuser->escapeString($_SERVER['REQUEST_TIME']);
+      $auth_access_insert = 'INSERT INTO user_auth_log ' .
+                            '(username, token, timestamp) VALUES ' .
+                            '("' . $username . '", "' . $auth_encoded .
+                            '", ' . $request_time . ')';
+      $fdbuser->exec($auth_access_insert);
       return $username;
     }
     else {
