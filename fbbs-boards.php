@@ -32,10 +32,10 @@ input[type=submit] {
 
 <body>
 <?php
-  $_LOCAL_API_CALLS = 1;
+  $previous_cmd_trim = trim($_POST['command']);
+  $_POST['command'] = $previous_cmd_trim;
 
-  $previous_cmd_trim = trim($_GET['command']);
-  $_GET['command'] = $previous_cmd_trim;
+  $_LOCAL_API_CALLS = 1;
 
   require 'fbbs-api.php';
 
@@ -93,7 +93,7 @@ ____
 *******//
 <br>
 ===========
-<FORM NAME="form1" METHOD="GET" ACTION="fbbs-boards.php">
+<FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
     board name:
 <?php
   echo '<INPUT TYPE="Text" VALUE="' . $previous_command  . ' " ';
@@ -102,8 +102,8 @@ ____
     <INPUT TYPE="Submit" Value="|/\enter/\|">
 </FORM>
 <br>
-<FORM NAME="postmsg" METHOD="GET" ACTION="fbbs-boards.php">
-    post message=>
+<FORM NAME="postmsg" METHOD="POST" ACTION="fbbs-boards.php">
+  post message=>
 <?php
   echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' [';
   echo $username . '] "';
@@ -215,8 +215,9 @@ function showDash(str_full) {
       });
     }
   }
-  xhttp.open("GET", "fbbs-api.php?command="+str, true);
-  xhttp.send();
+  xhttp.open("POST", "fbbs-api.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("command="+str);
 }
 
 if (prev_cmd_val) {

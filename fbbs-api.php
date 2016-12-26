@@ -36,7 +36,7 @@
     $name_results_array = $results_name->fetchArray(SQLITE3_ASSOC);
     $ip_name = $name_results_array['value'];
   }
-  $previous_command = $_GET['command'];
+  $previous_command = $_POST['command'];
   $ip = $db->escapeString($_SERVER['REMOTE_ADDR']);
   $exploded_previous_command = explode(" ", $previous_command, 2);
   $arg_count = count($exploded_previous_command);
