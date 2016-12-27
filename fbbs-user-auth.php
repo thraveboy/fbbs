@@ -45,6 +45,29 @@
     return FALSE;
   }
 
+  function current_user_id() {
+    $return_id = "-1";
+    $username = authorize_user();
+    if ($username) {
+      $fdbuser = new  FDBUSER();
+      if (!$fdbuser) {
+       echo $fdbuser->lastErrorMsg();
+      }
+      else {
+        $user_id_query = 'SELECT id, username FROM "users" where username = "'.
+                         $username . '" LIMIT 1';
+        $id_result = $fdbuser->query($user_id_query);
+        if (!empty($id_result)) {
+          $id_result_array = $id_result->fetchArray(SQLITE3_ASSOC);
+          if ($id_result_array) {
+            $return_id = $id_result_array["id"];
+          }
+        }
+      }
+    }
+    return $return_id;
+  }
+
   function last_auth_user() {
     $return_string = "";
     $fdbuser = new FDBUSER();

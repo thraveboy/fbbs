@@ -52,16 +52,19 @@ input[type=submit] {
 ?>
 
 <p>
-|||........................|| :::::::::::::
+|||........................|\\:::::::::::::::::::
 <br>
-||| <b>f</b>ury's <b>f</b>ortress (<b>fbbs</b>) || : board :::::
+||| <b>f</b>ury's <b>f</b>ortress (<b>fbbs</b>) ||: board :
 <span id="board_name"></span>
 
 <br>
-|||........................|| :::::::::::::
+|||........................|/:::::::::::::::...last online...<b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 <br>
-..last active...<b>[<span id="last_active"><?=$lastauth?></span>]</b>.....
-
+[[[[[[[[[[[[[[[
+<br>
+[[[[board info: <span id="board_info"></span>
+<br>
+[[[[[[[[[[[[[[[
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
     board name:
 <?php
@@ -162,7 +165,6 @@ function showDash(str_full) {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("dash").innerHTML = "<p>";
-      document.getElementById("board_name").innerHTML =str;
       var current_time = (new Date()).getTime();
       var jsonresponseobj = JSON.parse(this.responseText).value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
@@ -185,6 +187,28 @@ function showDash(str_full) {
   xhttp.open("POST", "fbbs-api.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("command="+str);
+
+  var xhttp_dashinfo;
+  xhttp_dashinfo = new XMLHttpRequest();
+  xhttp_dashinfo.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var jsonresponsearray = JSON.parse(this.responseText).value;
+      for (var i=0; i < jsonresponsearray.length; i++) {
+        var keyval_obj = jsonresponsearray[i];
+        Object.keys(keyval_obj).forEach(function(key,index) {
+          if (key == "value") {
+            document.getElementById("board_info").innerHTML = keyval_obj[key];
+          }
+        });
+      }
+    }
+  }
+  xhttp_dashinfo.open("POST", "fbbs-api.php", true);
+  xhttp_dashinfo.setRequestHeader("Content-type",
+                                  "application/x-www-form-urlencoded");
+  xhttp_dashinfo.send("command="+str+" @1");
+
+  document.getElementById("board_name").innerHTML = str;
 }
 
 if (prev_cmd_val) {
