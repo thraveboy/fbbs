@@ -1,16 +1,17 @@
 <?php
+  class FDBUSER extends SQLite3
+  {
+    function __construct()
+    {
+      $this->open('fbbs-user.db');
+    }
+  }
+
   function authorize_user() {
     $userauthorized = FALSE;
     $username = $_COOKIE['username'];
     $token = $_COOKIE['authToken'];
     if (($username != "") && ($token != "")) {
-      class FDBUSER extends SQLite3
-      {
-        function __construct()
-        {
-          $this->open('fbbs-user.db');
-        }
-      }
       $fdbuser = new FDBUSER();
       if (!$fdbuser) {
         echo $fdbuser->lastErrorMsg();
@@ -43,4 +44,28 @@
     }
     return FALSE;
   }
+
+  function last_auth_user() {
+    $return_string = "";
+    $fdbuser = new FDBUSER();
+    if (!$fdbuser) {
+     echo $fdbuser->lastErrorMsg();
+    }
+    else {
+      $cleanusername = "";
+      if (!empty($_COOKIE['username'])) {
+        $cleanusername = $fdbuser->escapeString($_COOKIE['username']);
+      }
+      $last_auth_query = 'SELECT username, timestamp FROM user_auth_log ' .
+                         'WHERE username != "'. $cleanusername .
+                         '" ORDER BY timestamp DESC LIMIT 1';
+      $last_auth_result = $fdbuser->query($last_auth_query);
+      if (!empty($last_auth_result)) {
+        $result_array = $last_auth_result->fetchArray(SQLITE3_ASSOC);
+        $return_string = $result_array['username'];
+      }
+    }
+    return $return_string;
+  }
+
 ?>

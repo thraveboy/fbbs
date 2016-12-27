@@ -37,62 +37,31 @@ input[type=submit] {
 
   $_LOCAL_API_CALLS = 1;
 
-  require 'fbbs-api.php';
+  require_once 'fbbs-api.php';
 
   $previous_command = explode(" ", $previous_cmd_trim)[0];
   echo '<div id="previous_command" hidden>';
   print($previous_command);
   echo '</div>';
-  $userauthorized = FALSE;
-  $username = $_COOKIE['username'];
-  $token = $_COOKIE['authToken'];
-  if (($username != "") && ($token != "")) {
-    class FDBUSER extends SQLite3
-    {
-      function __construct()
-      {
-        $this->open('fbbs-user.db');
-      }
-    }
-    $fdbuser = new FDBUSER();
-    if (!$fdbuser) {
-      echo $fdbuser->lastErrorMsg();
-    }
-    $auth_query = 'SELECT token FROM auth_tokens where username = "' .
-                  $username . '"';
-    $auth_result = $fdbuser->query($auth_query);
-    if (!empty($auth_result)) {
-      $auth_array = $auth_result->fetchArray(SQLITE3_ASSOC);
-      $auth_encoded = $auth_array['token'];
-      if (!empty($auth_encoded)) {
-        if (password_verify($token, $auth_encoded)) {
-          $userauthorized = TRUE;
-        }
-      }
-    }
-  }
-  if (!$userauthorized) {
-    header("Location: index.php");
-  }
+
+  require_once 'fbbs-user-auth.php';
+
+  $username = authorize_user();
+
+  $lastauth = last_auth_user();
 ?>
+
 <p>
-____
+|||........................|| :::::::::::::
 <br>
-||||\
+||| <b>f</b>ury's <b>f</b>ortress (<b>fbbs</b>) || : board :::::
+<span id="board_name"></span>
+
 <br>
-|||||\
+|||........................|| :::::::::::::
 <br>
-******\
-<br>
-*Fury's\\
-<br>
-*Fortress\
-<br>
-*fbbs  *//
-<br>
-*******//
-<br>
-===========
+..last active...<b>[<span id="last_active"><?=$lastauth?></span>]</b>.....
+
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
     board name:
 <?php
@@ -192,10 +161,8 @@ function showDash(str_full) {
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("dash").innerHTML = "<p>" +
-                      ":::::::::::::<br>" +
-                      ": board :::::<b> " + str + "</b><br>" +
-                      ":::::::::::::<br></p>";
+      document.getElementById("dash").innerHTML = "<p>";
+      document.getElementById("board_name").innerHTML =str;
       var current_time = (new Date()).getTime();
       var jsonresponseobj = JSON.parse(this.responseText).value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
