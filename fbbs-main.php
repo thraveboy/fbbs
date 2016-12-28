@@ -55,43 +55,32 @@ p {
   $lastauth = last_auth_user();
 ?>
 |\\::::::::::::::::::::::::|\::::::::::::::::::
-<span id="back_to_main">
-  <FORM NAME="backtomain" METHOD="POST" ACTION="fbbs-main.php" style="display:inline">
-    <INPUT TYPE="Submit"  Value="<<--back to main">
-  </form>
-</span>
 <br>
-||| <b>f</b>ury's <b>f</b>ortress (<b>fbbs</b>) ||: board :
+||| <b>f</b>ury's <b>f</b>ortress (<b>fbbs</b>) ||: command :
 <span id="board_name"></span>
 <br>
 |||........................|/:::::::::::::::...last online...
 <b>[<span id="last_active"><?=$lastauth?></span>]</b>...
+
+<script>
+  function launchCommand(str) {
+    var str_trim = str_full.trim();
+    var str = str_trim.split(" ")[0];
+    if (str.length == 0) {
+      document.getElementById("dash").innerHTML = "Try help... ";
+      return;
+    }
+    
+  }
+</script>
+
 <br>
 <br>
-[[[[[[[[[[[[[[[
-<br>
-[[[[board info: <span id="board_info"></span>
-<br>
-[[[[[[[[[[[[[[[
-<br>
-<br>
-<FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
-    board name:
 <?php
   echo '<INPUT TYPE="Text" VALUE="' . $previous_command  . ' " ';
   echo 'id="command" NAME="command" SIZE="20" autofocus>';
 ?>
     <INPUT TYPE="Submit" Value="|/\enter/\|">
-</FORM>
-<br>
-<FORM NAME="postmsg" METHOD="POST" ACTION="fbbs-boards.php">
-  post message=>
-<?php
-  echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' [';
-  echo $username . '] "';
-  echo 'id="message" NAME="command" SIZE="60">';
-?>
-  <INPUT TYPE="Submit" Value="<-enter|" SIZE="7">
 </FORM>
 
 <p>
@@ -168,7 +157,7 @@ function showDash(str_full) {
   var str_trim = str_full.trim();
   var str = str_trim.split(" ")[0];
   if (str.length == 0) {
-    document.getElementById("dash").innerHTML = "=-=";
+    document.getElementById("dash").innerHTML = "Try help... ";
     return;
   }
   xhttp = new XMLHttpRequest();
@@ -194,7 +183,7 @@ function showDash(str_full) {
       });
     }
   }
-  xhttp.open("POST", "fbbs-api.php", true);
+  xhttp.open("POST", "fbbs-api-private.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("command="+str);
 
@@ -213,7 +202,7 @@ function showDash(str_full) {
       }
     }
   }
-  xhttp_dashinfo.open("POST", "fbbs-api.php", true);
+  xhttp_dashinfo.open("POST", "fbbs-api-private.php", true);
   xhttp_dashinfo.setRequestHeader("Content-type",
                                   "application/x-www-form-urlencoded");
   xhttp_dashinfo.send("command="+str+" @1");
