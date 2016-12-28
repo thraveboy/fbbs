@@ -38,9 +38,10 @@ input {
 <br>
 -------------->>>>>>>>>
 <br>
-**************************
+****************************
 <br>
-** Fury's Fortress (fbbs) *
+** Fury's Fortress (fbbs) **
+
 <br>
 ****************************
 <br>
@@ -52,12 +53,19 @@ input {
 <br>
 *.....just discoveries.:).*******
 <br>
-***********************************
+****************************************
 <br>
-*https://github.com/thraveboy/fbbs**
+*//*********************************\\**
 <br>
-*************************************
+*||https://github.com/thraveboy/fbbs||**
 <br>
+*||*********************************||**
+<br>
+*||//\\||run on a raspberry pi||//\\||**
+<br>
+****************************************
+<br>
+****************************************
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-login-submit.php">
 username:
 <INPUT TYPE="Text" VALUE="" id="username" NAME="username" SIZE="40" autofocus>
