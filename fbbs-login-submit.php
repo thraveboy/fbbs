@@ -121,7 +121,7 @@ input {
   if (username && token) {
     document.cookie = "username = " + username;
     document.cookie = "authToken = " + token;
-    window.location = "fbbs-boards.php";
+    window.location = "fbbs-main.php";
   }
   document.write(username);
   document.write(token);

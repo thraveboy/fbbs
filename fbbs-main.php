@@ -125,36 +125,8 @@ function funPrefixes(prefix_length = 5) {
 function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
-    if (msgObj["id"] != undefined) {
-      return_html += "[" + funPrefixes(4) + "] " + msgObj["id"] + " ";
-    }
     if (msgObj["value"] !=  undefined) {
-      return_html += "[" + funPrefixes(4) + "] <b><u>" + msgObj["value"] +
-                     "</u></b>  ";
-    }
-    if (msgObj["timestamp"] != undefined) {
-      var current_time = (new Date()).getTime();
-      var dashtime = ((current_time/1000) - msgObj["timestamp"]) / 3600;
-      return_html += (Math.trunc((dashtime*1000)))/1000 + " hours ago ";
-    }
-    if (msgObj["ip"] != undefined) {
-      var hashed_ip = "" + msgObj["ip"].hashCode();
-      hashed_ip = hashed_ip.replace('-', '>');
-      hashed_ip = hashed_ip.replace(/[0-9]/g, function (c) {
-          return {
-            '0': 'o',
-            '1': 'O',
-            '2': '.',
-            '3': '_',
-            '4': '-',
-            '5': '=',
-            '6': ':',
-            '7': '|',
-            '8': '^',
-            '9': '~'
-          }[c]
-        });
-      return_html += "[" + hashed_ip + "]";
+     return_html += "<u>[" + funPrefixes(2) + "]</u> " + msgObj["value"];
     }
   }
   return return_html;
