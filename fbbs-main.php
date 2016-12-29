@@ -163,7 +163,7 @@ function showDash(str_full) {
       });
     }
   }
-  xhttp.open("POST", "fbbs-api-private.php", true);
+  xhttp.open("POST", "fbbs-api.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("command="+str);
 
@@ -182,7 +182,7 @@ function showDash(str_full) {
       }
     }
   }
-  xhttp_dashinfo.open("POST", "fbbs-api-private.php", true);
+  xhttp_dashinfo.open("POST", "fbbs-api.php", true);
   xhttp_dashinfo.setRequestHeader("Content-type",
                                   "application/x-www-form-urlencoded");
   xhttp_dashinfo.send("command="+str+" @1");
