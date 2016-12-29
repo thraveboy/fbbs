@@ -19,6 +19,11 @@ input {
     outline-width-left: 0px;
     outline-width-right: 0px;
     outline-color: cyan;
+    color: cyan;
+}
+
+input[type=submit] {
+    background-color: blue;
 }
 
 </style>
