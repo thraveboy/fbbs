@@ -62,26 +62,34 @@ p {
 |||........................|/:::::::::::::::...last online...
 <b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 
-<script>
-  function launchCommand(str) {
-    var str_trim = str_full.trim();
-    var str = str_trim.split(" ")[0];
-    if (str.length == 0) {
-      document.getElementById("dash").innerHTML = "Try help... ";
-      return;
-    }
-    
-  }
-</script>
+<br>
+<br>
 
-<br>
-<br>
+<FORM id="command_form" ACTION="" METHOD="POST">
 <?php
   echo '<INPUT TYPE="Text" VALUE="' . $previous_command  . ' " ';
   echo 'id="command" NAME="command" SIZE="20" autofocus>';
 ?>
-    <INPUT TYPE="Submit" Value="|/\enter/\|">
+    <INPUT ID="submission" TYPE="Submit" Value="|/\enter/\|"
+     onclick="launchCommand()">
 </FORM>
+
+<script>
+  function launchCommand() {
+    var str = document.getElementById("command").value;
+    var str_trim = str.trim();
+    var str = str_trim.split(" ")[0];
+    if (str.length == 0) {
+      document.getElementById("dash").innerHTML = "Try help... ";
+      return false;
+    }
+    else {
+      document.getElementById("command_form").action ="fbbs-" + str + ".php";
+      document.getElementById("command_form").submit();
+    }
+    return false;
+  }
+</script>
 
 <p>
 <span id="dash"></span>
@@ -222,7 +230,7 @@ function updateDash() {
   }
 }
 
-var dashUpdater = setInterval(updateDash, 5000);
+var dashUpdater = setInterval(updateDash, 2000);
 
 </script>
 
