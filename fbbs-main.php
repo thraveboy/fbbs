@@ -111,8 +111,8 @@ var prev_cmd_val = document.getElementById("previous_command").innerText;
 prev_cmd_val = prev_cmd_val.split(" ")[0];
 
 function funPrefixes(prefix_length = 5) {
-  var char_set = ["_", "_", "_", "_", "_", "_", "_", "_",
-                  "_", "_", "_", "_", "_", "_", "|", "O", "0", "o"];
+  var char_set = ["=", "-", "_", "_", "_", "_", "_", "_",
+                  "=", "-", "_", "_", "_", "_", "|", "|", "|", ":"];
 
 
   var return_string = "";
@@ -145,7 +145,9 @@ function showDash(str_full) {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("dash").innerHTML = "<p>";
       var current_time = (new Date()).getTime();
-      var jsonresponseobj = JSON.parse(this.responseText).value[0];
+      var jsonresponseobjarr = JSON.parse(this.responseText).value
+      if (jsonresponseobjarr == undefined) return;
+      var jsonresponseobj = jsonresponseobjarr[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
         var array_obj = jsonresponseobj[key];
         var entry_obj = new Object();
@@ -165,27 +167,7 @@ function showDash(str_full) {
   }
   xhttp.open("POST", "fbbs-api.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("command="+str);
-
-  var xhttp_dashinfo;
-  xhttp_dashinfo = new XMLHttpRequest();
-  xhttp_dashinfo.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var jsonresponsearray = JSON.parse(this.responseText).value;
-      for (var i=0; i < jsonresponsearray.length; i++) {
-        var keyval_obj = jsonresponsearray[i];
-        Object.keys(keyval_obj).forEach(function(key,index) {
-          if (key == "value") {
-            document.getElementById("board_info").innerHTML = keyval_obj[key];
-          }
-        });
-      }
-    }
-  }
-  xhttp_dashinfo.open("POST", "fbbs-api.php", true);
-  xhttp_dashinfo.setRequestHeader("Content-type",
-                                  "application/x-www-form-urlencoded");
-  xhttp_dashinfo.send("command="+str+" @1");
+  xhttp.send("command="+str+" @");
 
   document.getElementById("board_name").innerHTML = str;
 }

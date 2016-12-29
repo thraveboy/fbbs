@@ -28,22 +28,22 @@
   if(!$db){
     echo $db->lastErrorMsg();
   }
-  $clean_ip = $db->escapeString($_SERVER['REMOTE_ADDR']);
-  $user_name_query = 'SELECT ip, value, timestamp FROM "name" WHERE ip = "' .
-                     $clean_ip . '" ORDER BY timestamp DESC LIMIT 1';
-  $results_name = $db->query($user_name_query);
-  if (!empty($results_name)) {
-    $name_results_array = $results_name->fetchArray(SQLITE3_ASSOC);
-    $ip_name = $name_results_array['value'];
-  }
   $previous_command = $_POST['command'];
   $ip = $db->escapeString($_SERVER['REMOTE_ADDR']);
   $exploded_previous_command = explode(" ", $previous_command, 2);
   $arg_count = count($exploded_previous_command);
-  if ($arg_count == 1) {
+  if (($arg_count == 1) ||
+      (($arg_count == 2) && ($exploded_previous_command[1] == '@'))) {
     $table_name = $db->escapeString($exploded_previous_command[0]);
+    $order_type = "DESC";
+    $max_limit = "20";
+    if ($arg_count == 2) {
+      $order_type = "ASC";
+      $max_limit = 5;
+    }
     $query_string = "SELECT id, ip, value, timestamp from " . $table_name .
-                    " ORDER BY timestamp DESC LIMIT 20";
+                    " ORDER BY timestamp  ". $order_type .
+                    " LIMIT ". $max_limit;
     $results = $db->query($query_string);
     if (!empty($results)) {
       $outputObject->append('"value":[{');
