@@ -8,6 +8,12 @@ Get sqlite3 command line:
 
 sudo apt-get sqlite3
 
+In /var/www/html, 'touch' the fdb.db file (this is the SQLITE database file) and change the permission so apache can use it:
+
+sudo touch /var/www/html/fdb.db
+
+sudo chmod a+wr fdb.db
+
 Create user database in sqlite:
 
 sudo touch fbbs-user.db; sudo chmod a+wr fbbs-user.db
