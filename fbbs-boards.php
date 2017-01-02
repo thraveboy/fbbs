@@ -184,7 +184,9 @@ function showDash(str_full) {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("dash").innerHTML = "<p>";
       var current_time = (new Date()).getTime();
-      var jsonresponseobj = JSON.parse(this.responseText).value[0];
+      var jsonresponseparsed = JSON.parse(this.responseText);
+      if (jsonresponseparsed.value == undefined) return;
+      var jsonresponseobj = jsonresponseparsed.value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
         var array_obj = jsonresponseobj[key];
         var entry_obj = new Object();
@@ -212,7 +214,9 @@ function showDash(str_full) {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("board_info").innerHTML = "|||<br>";
       var current_time = (new Date()).getTime();
-      var jsonresponseobj = JSON.parse(this.responseText).value[0];
+      var jsonresponseparsed = JSON.parse(this.responseText);
+      if (jsonresponseparsed.value == undefined) return;
+      var jsonresponseobj = jsonresponseparsed.value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
         var array_obj = jsonresponseobj[key];
         var entry_obj = new Object();
