@@ -4,8 +4,8 @@
 <style>
 body, input {
     font-family: monospace;
-    font-size: small;
-    background-color: blue;
+    font-size: xx-large;
+    background-color: purple;
     color: cyan;
 }
 
@@ -24,7 +24,7 @@ input {
 
 input[type=submit] {
     outline-color: cyan;
-    background-color: blue;
+    background-color: purple;
 }
 
 p {
@@ -67,13 +67,11 @@ p {
 |||........................|/:::::::::::::::...last online...
 <b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 <br>
+|||||||||||||||||
 <br>
-[[[[[[[[[[[[[[[
+|||<u> board info </u>||
 <br>
-[[[[board info: <span id="board_info"></span>
-<br>
-[[[[[[[[[[[[[[[
-<br>
+<div id="board_info"></div>
 <br>
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
     board name:
@@ -115,8 +113,7 @@ prev_cmd_val = prev_cmd_val.split(" ")[0];
 
 function funPrefixes(prefix_length = 5) {
   var char_set = ["_", "_", "_", "_", "_", "_", "_", "_",
-                  "_", "_", "_", "_", "_", "_", "|", "O", "0", "o"];
-
+                  " ", " ", ".", "O", "0", "o"];
 
   var return_string = "";
   for (var i=0; i<prefix_length; i++) {
@@ -125,15 +122,26 @@ function funPrefixes(prefix_length = 5) {
   return return_string;
 }
 
+function infoOutput(msgObj) {
+  var return_html = "";
+  if (msgObj) {
+    if (msgObj["value"] !=  undefined) {
+      return_html += "|" + funPrefixes(1) + "| <b>" + msgObj["value"] +
+                     "</b> ";
+    }
+  }
+  return return_html;
+}
+
 function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
     if (msgObj["id"] != undefined) {
-      return_html += "[" + funPrefixes(4) + "] " + msgObj["id"] + " ";
+      return_html += "<u>|</u>" + funPrefixes(1) + "<u>|</u>" + msgObj["id"] + "";
     }
     if (msgObj["value"] !=  undefined) {
-      return_html += "[" + funPrefixes(4) + "] <b><u>" + msgObj["value"] +
-                     "</u></b>  ";
+      return_html += "<u>|</u>" + funPrefixes(1) + "<u>|</u> " + msgObj["value"] +
+                     "  ";
     }
     if (msgObj["timestamp"] != undefined) {
       var current_time = (new Date()).getTime();
@@ -202,28 +210,38 @@ function showDash(str_full) {
   xhttp_dashinfo = new XMLHttpRequest();
   xhttp_dashinfo.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      var jsonresponsearray = JSON.parse(this.responseText).value;
-      for (var i=0; i < jsonresponsearray.length; i++) {
-        var keyval_obj = jsonresponsearray[i];
-        Object.keys(keyval_obj).forEach(function(key,index) {
-          if (key == "value") {
-            document.getElementById("board_info").innerHTML = keyval_obj[key];
-          }
-        });
-      }
+      document.getElementById("board_info").innerHTML = "|||<br>";
+      var current_time = (new Date()).getTime();
+      var jsonresponseobj = JSON.parse(this.responseText).value[0];
+      Object.keys(jsonresponseobj).forEach(function(key,index) {
+        var array_obj = jsonresponseobj[key];
+        var entry_obj = new Object();
+        for (var i=0; i < array_obj.length; i++) {
+          var keyval_obj = array_obj[i];
+          Object.keys(keyval_obj).forEach(function(key,index) {
+            Object.keys(keyval_obj).forEach(function(id,idx) {
+                entry_obj[id] = keyval_obj[id];
+              });
+          });
+        }
+        var entry_output = infoOutput(entry_obj);
+
+        document.getElementById("board_info").innerHTML += entry_output + "<br>";
+      });
     }
   }
+
   xhttp_dashinfo.open("POST", "fbbs-api.php", true);
   xhttp_dashinfo.setRequestHeader("Content-type",
                                   "application/x-www-form-urlencoded");
-  xhttp_dashinfo.send("command="+str+" @1");
+  xhttp_dashinfo.send("command="+str+" @");
 
   document.getElementById("board_name").innerHTML = str;
 }
 
 if (prev_cmd_val) {
- showDash(prev_cmd_val);
- document.getElementById("command").value = prev_cmd_val;
+  showDash(prev_cmd_val);
+  document.getElementById("command").value = prev_cmd_val;
 }
 
 function updateDash() {
