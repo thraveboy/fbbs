@@ -5,8 +5,8 @@
 body, input {
     font-family: monospace;
     font-size: xx-large;
-    background-color: purple;
-    color: cyan;
+    background-color: black;
+    color: green;
 }
 
 input {
@@ -14,17 +14,17 @@ input {
     border-bottom-width: 1px;
     border-left-width: 0px;
     border-right-width: 0px;
-    border-color: cyan;
+    border-color: green;
     outline-width: 1px;
     outline-width-left: 0px;
     outline-width-right: 0px;
-    outline-color: cyan;
-    color: cyan;
+    outline-color: green;
+    color: green;
 }
 
 input[type=submit] {
-    outline-color: cyan;
-    background-color: purple;
+    outline-color: green;
+    background-color: black;
 }
 
 p {
@@ -54,17 +54,17 @@ p {
 
   $lastauth = last_auth_user();
 ?>
-|\\::::::::::::::::::::::::|\::::::::::::::::::
+|\\:::::::::::::::::::::::::::::::::::|\::::::::::::::::::
 <span id="back_to_main">
   <FORM NAME="backtomain" METHOD="POST" ACTION="fbbs-main.php" style="display:inline">
     <INPUT TYPE="Submit"  Value="<<--back to main">
   </form>
 </span>
 <br>
-||| <b>f</b>ury's <b>f</b>ortress (<b>fbbs</b>) ||: board :
+||| <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</b>ystem (<b>fbbs</b>) ||: board :
 <span id="board_name"></span>
 <br>
-|||........................|/:::::::::::::::...last online...
+|||...................................|/:::::::::::::::...last online...
 <b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 <br>
 |||||||||||||||||

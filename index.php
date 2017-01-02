@@ -5,8 +5,8 @@
 body, input {
     font-family: monospace;
     font-size: xx-large;
-    background-color: blue;
-    color: cyan;
+    background-color: black;
+    color: green;
 }
 
 input {
@@ -14,11 +14,11 @@ input {
     border-bottom-width: 1px;
     border-left-width: 0px;
     border-right-width: 0px;
-    border-color: cyan;
+    border-color: green;
     outline-width: 1px;
     outline-width-left: 0px;
     outline-width-right: 0px;
-    outline-color: cyan;
+    outline-color: green;
 }
 
 </style>
@@ -30,42 +30,20 @@ input {
 ?>
 
 <p>
-|\______
+****************************************
 <br>
---------->>>>
-<br>
-[o]----[o]---=>>>>>>>
-<br>
--------------->>>>>>>>>
-<br>
-****************************
-<br>
-** Fury's Fortress (fbbs) **
-
-<br>
-****************************
-<br>
-*-a hacker's open, paradise.*
-<br>
-*-explore..type freely.:).****
-<br>
-*there are no mistakes....******
-<br>
-*.....just discoveries.:).*******
+** fury bulletin board system (fbbs) ***
 <br>
 ****************************************
 <br>
-*//*********************************\\**
-<br>
-*||https://github.com/thraveboy/fbbs||**
-<br>
-*||*********************************||**
-<br>
-*||//\\||run on a raspberry pi||//\\||**
+** https://github.com/thraveboy/fbbs ***
 <br>
 ****************************************
 <br>
+******** run on a raspberry pi *********
+<br>
 ****************************************
+<br>
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-login-submit.php">
 username:
 <INPUT TYPE="Text" VALUE="" id="username" NAME="username" SIZE="40" autofocus>
