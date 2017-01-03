@@ -181,9 +181,12 @@ function showDash(str_full) {
         }
         var new_val = messageOutput(entry_obj);
         label_array.push(new_val);
-        var new_val_obj = eval("({"+new_val+"})");
-        if (typeof new_val_obj == 'object') {
-          data_array.push(new_val_obj);
+        var isTuple = new_val.split(" ").length > 1;
+        if (isTuple) {
+          var new_val_obj = eval("({"+new_val+"})");
+          if (typeof new_val_obj == 'object') {
+              data_array.push(new_val_obj);
+          }
         }
         else {
           data_array.push(parseInt(new_val, 10));
@@ -192,22 +195,21 @@ function showDash(str_full) {
       var dataStruct = {
         labels: label_array,
         datasets: [
-            {
-                label: str,
-                fillColor : "rgba(172,194,132,0.4)",
-                strokeColor : "#ACC26D",
-                pointColor : "#fff",
-                pointStrokeColor : "#9DB86D",
-                data : data_array
-            }
-        ]
-      }
+          {
+            label: str,
+                   fillColor : "rgba(172,194,132,0.4)",
+                   strokeColor : "#ACC26D",
+                   pointColor : "#fff",
+                   pointStrokeColor : "#9DB86D",
+                   data : data_array
+           }
+         ]
+        }
       var charInstance = new Chart(ctx, {
           label: str,
           type : fbbsGraphType,
           data : dataStruct
         });
-
     }
   }
   xhttp.open("POST", "fbbs-api.php", true);
