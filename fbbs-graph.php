@@ -74,13 +74,13 @@ p {
 |||...................................|/:::::::::::::::...last online...
 <b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 
-<FORM NAME="form1" METHOD="POST" ACTION="fbbs-<?=$fbbs_graph_type?>.php">
+<FORM NAME="form1" METHOD="POST" id="form1">
     board name:
 <?php
-  echo '<INPUT TYPE="Text" VALUE="' . $previous_command  . ' " ';
+  echo '<INPUT TYPE="text" VALUE="' . $previous_command  . ' " ';
   echo 'id="command" NAME="command" SIZE="20" autofocus>';
 ?>
-    <INPUT TYPE="Submit" Value="|/\enter/\|">
+    <INPUT TYPE="submit" Value="|/\enter/\|">
 </FORM>
 |||||||||||||||||
 <br>
@@ -261,6 +261,22 @@ function updateDash() {
   if (dashName) {
     showDash(dashName);
   }
+}
+
+function captureFormEnter(e) {
+  if (e.preventDefault) e.preventDefault();
+
+  updateDash();
+
+  return false;
+}
+
+var formElement = document.getElementById('form1');
+if (formElement.attachEvent) {
+  formElement.attachEvent("submit", captureFormEnter);
+}
+else {
+  formElement.addEventListener("submit", captureFormEnter);
 }
 
 var dashUpdater = setInterval(updateDash, 5000);
