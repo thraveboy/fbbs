@@ -5,8 +5,8 @@
 body, input {
     font-family: monospace;
     font-size: xx-large;
-    background-color: black;
-    color: green;
+    background-color: white;
+    color: black;
 }
 
 input {
@@ -14,17 +14,17 @@ input {
     border-bottom-width: 1px;
     border-left-width: 0px;
     border-right-width: 0px;
-    border-color: green;
+    border-color: blue;
     outline-width: 1px;
     outline-width-left: 0px;
     outline-width-right: 0px;
-    outline-color: green;
-    color: green;
+    outline-color: blue;
+    color: blue;
 }
 
 input[type=submit] {
-    outline-color: green;
-    background-color: black;
+    outline-color: blue;
+    background-color: white;
 }
 
 p {
@@ -76,7 +76,7 @@ p {
 <br>
 <div id="board_info"></div>
 <br>
-<FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
+<FORM NAME="form1" METHOD="POST" ACTION="fbbs-dash.php">
     board name:
 <?php
   echo '<INPUT TYPE="Text" VALUE="' . $previous_command  . ' " ';
@@ -85,7 +85,7 @@ p {
     <INPUT TYPE="Submit" Value="|/\enter/\|">
 </FORM>
 <br>
-<FORM NAME="postmsg" METHOD="POST" ACTION="fbbs-boards.php">
+<FORM NAME="postmsg" METHOD="POST" ACTION="fbbs-dash.php">
   post message=>
 <?php
   echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' [';
@@ -96,9 +96,9 @@ p {
 </FORM>
 
 <p>
-<div id="dashChart"></div>
-<span id="dash"></span>
+<canvas id="dashChart" width="640" height="480"></canvas>
 </p>
+<div id="dash"></span>
 
 <script>
 
@@ -140,36 +140,8 @@ function infoOutput(msgObj) {
 function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
-    if (msgObj["id"] != undefined) {
-      return_html += "<u>|</u>" + funPrefixes(1) + "<u>|</u>" + msgObj["id"] + "";
-    }
     if (msgObj["value"] !=  undefined) {
-      return_html += "<u>|</u>" + funPrefixes(1) + "<u>|</u> " + msgObj["value"] +
-                     "  ";
-    }
-    if (msgObj["timestamp"] != undefined) {
-      var current_time = (new Date()).getTime();
-      var dashtime = ((current_time/1000) - msgObj["timestamp"]) / 3600;
-      return_html += (Math.trunc((dashtime*1000)))/1000 + " hours ago ";
-    }
-    if (msgObj["ip"] != undefined) {
-      var hashed_ip = "" + msgObj["ip"].hashCode();
-      hashed_ip = hashed_ip.replace('-', '>');
-      hashed_ip = hashed_ip.replace(/[0-9]/g, function (c) {
-          return {
-            '0': 'o',
-            '1': 'O',
-            '2': '.',
-            '3': '_',
-            '4': '-',
-            '5': '=',
-            '6': ':',
-            '7': '|',
-            '8': '^',
-            '9': '~'
-          }[c]
-        });
-      return_html += "[" + hashed_ip + "]";
+      return_html += msgObj["value"].trim();
     }
   }
   return return_html;
@@ -180,13 +152,14 @@ function showDash(str_full) {
   var str_trim = str_full.trim();
   var str = str_trim.split(" ")[0];
   if (str.length == 0) {
-    document.getElementById("dash").innerHTML = "=-=";
     return;
   }
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("dash").innerHTML = "<p>";
+      var ctx = document.getElementById("dashChart");
+      var label_array = [];
+      var data_array = [];
       var current_time = (new Date()).getTime();
       var jsonresponseparsed = JSON.parse(this.responseText);
       if (jsonresponseparsed.value == undefined) return;
@@ -202,10 +175,29 @@ function showDash(str_full) {
               });
           });
         }
-        var entry_output = messageOutput(entry_obj);
-
-        document.getElementById("dash").innerHTML += entry_output + "<br>";
+        var new_val = messageOutput(entry_obj);
+        label_array.push(new_val);
+        data_array.push(parseInt(new_val, 10));
       });
+      var dataStruct = {
+        labels: label_array,
+        datasets: [
+            {
+                label: str,
+                fillColor : "rgba(172,194,132,0.4)",
+                strokeColor : "#ACC26D",
+                pointColor : "#fff",
+                pointStrokeColor : "#9DB86D",
+                data : data_array
+            }
+        ]
+      }
+      var charInstance = new Chart(ctx, {
+          label: str,
+          type : 'line',
+          data : dataStruct
+        });
+
     }
   }
   xhttp.open("POST", "fbbs-api.php", true);
