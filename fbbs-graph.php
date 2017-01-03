@@ -131,7 +131,21 @@ function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
     if (msgObj["value"] !=  undefined) {
-      return_html += msgObj["value"].trim();
+      var valueTrimmed = msgObj["value"].trim();
+      var valueSplit = valueTrimmed.split(" ");
+      var returnValue = valueTrimmed;
+      var valSplitLen = valueSplit.length;
+      if (valSplitLen == 2) {
+        return_html += "x: " + valueSplit[0] + ", y: " +
+                       valueSplit[1];
+      }
+      else if (valSplitLen == 3) {
+        return_html += "x: " + valueSplit[0] + ", y: " +
+                       valueSplit[1] + ", r: " + valueSplit[2];
+      }
+      else {
+        return_html += returnValue;
+      }
     }
   }
   return return_html;
@@ -167,7 +181,13 @@ function showDash(str_full) {
         }
         var new_val = messageOutput(entry_obj);
         label_array.push(new_val);
-        data_array.push(parseInt(new_val, 10));
+        var new_val_obj = eval("({"+new_val+"})");
+        if (typeof new_val_obj == 'object') {
+          data_array.push(new_val_obj);
+        }
+        else {
+          data_array.push(parseInt(new_val, 10));
+        }
       });
       var dataStruct = {
         labels: label_array,
