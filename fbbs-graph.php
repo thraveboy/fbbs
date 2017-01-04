@@ -180,16 +180,16 @@ function showDash(str_full) {
           });
         }
         var new_val = messageOutput(entry_obj);
-        label_array.push(new_val);
+        label_array.unshift(new_val);
         var isTuple = new_val.split(" ").length > 1;
         if (isTuple) {
           var new_val_obj = eval("({"+new_val+"})");
           if (typeof new_val_obj == 'object') {
-              data_array.push(new_val_obj);
+              data_array.unshift(new_val_obj);
           }
         }
         else {
-          data_array.push(parseInt(new_val, 10));
+          data_array.unshift(parseInt(new_val, 10));
         }
       });
       var dataStruct = {
