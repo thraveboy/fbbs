@@ -84,10 +84,7 @@ p {
 <br>
 <FORM NAME="postmsg" METHOD="POST" ID="postmsg" ACTION="">
   post data=>
-<?php
-  echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' " ';
-  echo 'id="message" NAME="message" SIZE="60">';
-?>
+  <INPUT TYPE="Text" VALUE="" id="message" NAME="message" SIZE="60">
   <INPUT TYPE="Submit" Value="<-enter|" SIZE="7">
 </FORM>
 
@@ -254,7 +251,7 @@ function updateDash() {
   }
 }
 
-var dashUpdater = setInterval(updateDash, 5000);
+var dashUpdater = setInterval(updateDash, 2000);
 
 function captureFormEnter(e) {
   if (e.preventDefault) e.preventDefault();

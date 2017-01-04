@@ -156,16 +156,17 @@
       }
 
       $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
+      $j_value = json_encode($value).trim();
       if (!$update_val) {
         $insert_query =  'INSERT INTO ' . $table_name .
                          ' (ip, value, timestamp) ' .
-                         'VALUES ("'  . $ip . '", "'. $value . '", "' .
+                         'VALUES ("'  . $ip . '", '. $j_value . ', "' .
                          $request_time . '")';
       }
       else {
         $insert_query =  'UPDATE '. $table_name . ' SET ' .
-                         ' ip = "' . $ip . '", value = "'. $value .
-                         '", timestamp = "' . $request_time . '" ' .
+                         ' ip = "' . $ip . '", value = '. $j_value .
+                         ', timestamp = "' . $request_time . '" ' .
                          'WHERE id = ' . $update_location;
       }
       $db->exec($insert_query);
