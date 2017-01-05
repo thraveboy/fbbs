@@ -271,17 +271,25 @@ if (prev_cmd_val) {
   document.getElementById("command").value = prev_cmd_val;
 }
 
-function updateDash() {
+function getURLWithoutParams() {
+  return location.pathname;
+}
+
+function updateDash(addCommandToUrl = false ) {
   var dashName = document.getElementById("command").value;
   if (dashName) {
     showDash(dashName);
+    if (addCommandToUrl) {
+      history.pushState({}, '',
+                        getURLWithoutParams() + '?command=' + dashName);
+    }
   }
 }
 
 function captureFormEnter(e) {
   if (e.preventDefault) e.preventDefault();
 
-  updateDash();
+  updateDash(true);
 
   return false;
 }
