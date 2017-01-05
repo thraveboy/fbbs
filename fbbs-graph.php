@@ -46,6 +46,11 @@ p {
   $previous_cmd_trim = trim($_POST['command']);
   $_POST['command'] = $previous_cmd_trim;
 
+  if (empty($previous_cmd_trim)) {
+    $previous_cmd_trim = trim($_GET['command']);
+    $_POST['command'] = $previous_cmd_trim;
+  }
+
   $_LOCAL_API_CALLS = 1;
 
   require_once 'fbbs-api.php';
@@ -165,8 +170,13 @@ function showDash(str_full) {
       var label_array = [];
       var data_array = [];
       var current_time = (new Date()).getTime();
-      var jsonresponseparsed = JSON.parse(this.responseText);
-      if (jsonresponseparsed.value == undefined) return;
+      try {
+        var jsonresponseparsed = JSON.parse(this.responseText);
+      } catch(err) {
+        return;
+      }
+      if (jsonresponseparsed == undefined ||
+          jsonresponseparsed.value == undefined) return;
       var jsonresponseobj = jsonresponseparsed.value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
         var array_obj = jsonresponseobj[key];
@@ -222,8 +232,13 @@ function showDash(str_full) {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("board_info").innerHTML = "|||<br>";
       var current_time = (new Date()).getTime();
-      var jsonresponseparsed = JSON.parse(this.responseText);
-      if (jsonresponseparsed.value == undefined) return;
+      try {
+        var jsonresponseparsed = JSON.parse(this.responseText);
+      } catch(err) {
+        return;
+      }
+      if (jsonresponseparsed == undefined ||
+          jsonresponseparsed.value == undefined) return;
       var jsonresponseobj = jsonresponseparsed.value[0];
       Object.keys(jsonresponseobj).forEach(function(key,index) {
         var array_obj = jsonresponseobj[key];
