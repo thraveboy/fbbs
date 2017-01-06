@@ -54,23 +54,29 @@ p {
 
   $lastauth = last_auth_user();
 ?>
-|\\:::::::::::::::::::::::::::::::::::|\::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::|
+<br>
+::: <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</b>ystem (<b>fbbs</b>) |
+<br>
+::::::::::::::::::::::::::::::::::::::|
+<br>
 <span id="back_to_main">
   <FORM NAME="backtomain" METHOD="POST" ACTION="fbbs-main.php" style="display:inline">
-    <INPUT TYPE="Submit"  Value="<<--back to main">
+    <INPUT TYPE="Submit"  Value="<<--back to main ...">
   </form>
 </span>
 <br>
-||| <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</b>ystem (<b>fbbs</b>) ||: board :
-<span id="board_name"></span>
+::::::::::::::::::::::::::::::::::::::|
 <br>
-|||...................................|/:::::::::::::::...last online...
+...last online...
 <b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 <br>
-|||||||||||||||||
+::::::::::::::::::::::::::::::::::::::|
 <br>
-|||<u> board info </u>||
+::::  <u>board</u> :
+<span id="board_name"></span>
 <br>
+::::::::::::::::::::::::::::::::::::::|
 <div id="board_info"></div>
 <br>
 <FORM NAME="form1" METHOD="POST" ACTION="fbbs-boards.php">
@@ -126,8 +132,7 @@ function infoOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
     if (msgObj["value"] !=  undefined) {
-      return_html += "|" + funPrefixes(1) + "| <b>" + msgObj["value"] +
-                     "</b> ";
+      return_html += "-=> <b>" + msgObj["value"] + "</b>";
     }
   }
   return return_html;
@@ -137,11 +142,10 @@ function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
     if (msgObj["id"] != undefined) {
-      return_html += "<u>|</u>" + funPrefixes(1) + "<u>|</u>" + msgObj["id"] + "";
+      return_html += "]]]" + msgObj["id"] + "[[[ ";
     }
     if (msgObj["value"] !=  undefined) {
-      return_html += "<u>|</u>" + funPrefixes(1) + "<u>|</u> " + msgObj["value"] +
-                     "  ";
+      return_html +=  "<b>" + msgObj["value"] + "</b> ";
     }
     if (msgObj["timestamp"] != undefined) {
       var current_time = (new Date()).getTime();
@@ -212,7 +216,7 @@ function showDash(str_full) {
   xhttp_dashinfo = new XMLHttpRequest();
   xhttp_dashinfo.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("board_info").innerHTML = "|||<br>";
+      document.getElementById("board_info").innerHTML = "<br>";
       var current_time = (new Date()).getTime();
       var jsonresponseparsed = JSON.parse(this.responseText);
       if (jsonresponseparsed.value == undefined) return;
