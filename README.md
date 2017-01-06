@@ -8,9 +8,19 @@ Get sqlite3 command line:
 
 sudo apt-get sqlite3
 
-Create user database in sqlite:
+Change access to database file so apache can access them:
 
-sudo touch fbbs-user.db; sudo chmod a+wr fbbs-user.db
+sudo chmod a+wr fbbs.db
+sudo chmod a+wr fbbs-user.db
+sudo chmod a+wr fbbs-private.db
+
+
+# If want to create DBs by hand, instead of using default dbs. (must also change access with chmod as in above).
+
+
+Create initial main public db:
+
+touch fbbs.db
 
 Create users table in fbbs.db in sqlite3:
 
@@ -28,7 +38,5 @@ sudo touch fbbs-private.db; sudo chmod a+wr fbbs-private.db
 CREATE TABLE table_write_auth(id INTEGER PRIMARY KEY ASC, tablename TEXTNOT NULL, username TEXT NOT NULL, timestamp INTEGER NOT NULL);
 CREATE INDEX table_write_auth_idx ON table_write_auth(tablename);
  
-## Usage
-
 
 
