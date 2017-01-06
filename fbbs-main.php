@@ -167,7 +167,7 @@ function showDash(str_full) {
   }
   xhttp.open("POST", "fbbs-api.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("command="+str+" @");
+  xhttp.send("command=_"+str+" @");
 
   document.getElementById("board_name").innerHTML = str;
 }
