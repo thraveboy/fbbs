@@ -34,16 +34,41 @@
       $this->open('fbbs.db');
     }
   }
-
-  $db = new FDB();
-  if(!$db){
-    echo $db->lastErrorMsg();
+  class FDBPrivate extends SQLite3
+  {
+    function __construct()
+    {
+      $this->open('fbbs-private.db');
+    }
   }
+
   $previous_command = trim($_POST['command']);
-  $ip = $db->escapeString($_SERVER['REMOTE_ADDR']);
+  if (empty($previous_command)) {
+    $previous_command = trim($_GET['command']);
+    $_POST['command'] = $previous_command;
+  }
   $exploded_previous_command = explode(" ", $previous_command, 3);
   $arg_count = count($exploded_previous_command);
   $retrieved_value = FALSE;
+  $is_private_board = FALSE;
+  $user_has_private_write_access = FALSE;
+
+  function canWriteQ() {
+    return ((!$is_private_board) || $user_has_private_write_access ||
+             isSysOpQ());
+  }
+
+  if (($arg_count > 0) && ($previous_command[0] == "_")) {
+    $is_private_board = TRUE;
+    $db = new FDBPrivate();
+  }
+  else {
+    $db = new FDB();
+  }
+  if(!$db){
+    echo $db->lastErrorMsg();
+  }
+  $ip = $db->escapeString($_SERVER['REMOTE_ADDR']);
   if (($arg_count == 1) ||
       (($arg_count == 2) && ($exploded_previous_command[1] == '@'))) {
     $table_name = $db->escapeString($exploded_previous_command[0]);
@@ -85,6 +110,21 @@
                             " (id INTEGER PRIMARY KEY ASC, ip TEXT," .
                             "value TEXT, timestamp INTEGER)";
       $db->exec($table_create_query);
+      $error_code = $db->lastErrorCode();
+      $error_msg = $db->lastErrorMsg();
+      if (!$error_code && $is_private_board) {
+        $clean_username = $db->escapeString($_COOKIE['username']);
+        $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
+        if (!empty($clean_username)) {
+          $add_user_write_auth  = "INSERT INTO table_write_auth  " .
+                                  "(tablename, username, timestamp) " .
+                                  "VALUES ('" . $table_name . "', '" .
+                                  $clean_username . "', '" . $request_time .
+                                  "')";
+          $db->query($add_user_write_auth);
+          $user_has_private_write_access = TRUE;
+        }
+      }
     }
     $retrieved_value = TRUE;
   }
@@ -142,11 +182,11 @@
         }
       }
     }
-    else {
+    elseif (canWriteQ()) {
       $value .=  " " . $db->escapeString($exploded_previous_command[2]);
       $update_val = FALSE;
       $update_location = -1;
-      if ($arg_count > 2 && $sysopRequest) {
+      if ($arg_count > 2 && ($sysopRequest || $is_private_board)) {
         if ($value[0] == '@') {
           $update_val = TRUE;
           $update_location =
