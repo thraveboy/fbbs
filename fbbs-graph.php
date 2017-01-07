@@ -169,6 +169,7 @@ function showDash(str_full) {
       var ctx = document.getElementById("dashChart");
       var label_array = [];
       var data_array = [];
+      var color_array = [];
       var current_time = (new Date()).getTime();
       try {
         var jsonresponseparsed = JSON.parse(this.responseText);
@@ -191,6 +192,16 @@ function showDash(str_full) {
         }
         var new_val = messageOutput(entry_obj);
         label_array.unshift(new_val);
+        var currentColor = "rgba(0, 0, 255, 1.0)";
+        var first_val = new_val.split(" ")[0];
+        if (!isNaN(parseFloat(new_val)) && (isFinite(new_val))) {
+          if (new_val < 50) {
+            currentColor = "rgba(255, 0, 0, 1.0)";
+          } else if (new_val < 75) {
+            currentColor = "rgba(255, 255, 0, 1.0)";
+          }
+        }
+        color_array.unshift(currentColor);
         var isTuple = new_val.split(" ").length > 1;
         if (isTuple) {
           var new_val_obj = eval("({"+new_val+"})");
@@ -207,11 +218,10 @@ function showDash(str_full) {
         datasets: [
           {
             label: str,
-                   fillColor : "rgba(172,194,132,0.4)",
-                   strokeColor : "#ACC26D",
-                   pointColor : "#fff",
-                   pointStrokeColor : "#9DB86D",
-                   data : data_array
+            data : data_array,
+            backgroundColor: "rgba(0,0,200,0.2)",
+            borderColor: color_array,
+            borderWidth: 1
            }
          ]
         }
