@@ -108,13 +108,13 @@
     else {
       $table_create_query = "CREATE TABLE " . $table_name .
                             " (id INTEGER PRIMARY KEY ASC, ip TEXT," .
-                            "value TEXT, timestamp INTEGER)";
+                            "value TEXT, timestamp BIGINT)";
       $db->exec($table_create_query);
       $error_code = $db->lastErrorCode();
       $error_msg = $db->lastErrorMsg();
       if (!$error_code && $is_private_board) {
         $clean_username = $db->escapeString($_COOKIE['username']);
-        $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
+        $request_time = time();
         if (!empty($clean_username)) {
           $add_user_write_auth  = "INSERT INTO table_write_auth  " .
                                   "(tablename, username, timestamp) " .
@@ -195,8 +195,9 @@
         }
       }
 
-      $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
-      $j_value = json_encode($value).trim();
+      $request_time = time();
+      $j_value =
+        json_encode($db->escapeString(str_replace('"', '', trim($value))));
       if (!$update_val) {
         $insert_query =  'INSERT INTO ' . $table_name .
                          ' (ip, value, timestamp) ' .

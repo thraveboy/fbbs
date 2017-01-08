@@ -31,7 +31,7 @@
       }
     }
     if ($userauthorized) {
-      $request_time = $fdbuser->escapeString($_SERVER['REQUEST_TIME']);
+      $request_time = time();
       $auth_access_insert = 'INSERT INTO user_auth_log ' .
                             '(username, token, timestamp) VALUES ' .
                             '("' . $username . '", "' . $auth_encoded .

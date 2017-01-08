@@ -101,7 +101,7 @@ input {
       echo 'attempting to create new account for ' . $usernamepost . '..<br>';
       $passwordhashed = password_hash($passwordpost, PASSWORD_DEFAULT);
       if (password_verify($passwordagainpost, $passwordhashed)) {
-         $request_time = $db->escapeString($_SERVER['REQUEST_TIME']);
+         $request_time = time();
          $create_query = 'INSERT INTO users (username, password, timestamp) ' .
                          'VALUES ("'. $cleanusername . '", "' .
                          $passwordhashed . '", "'. $request_time . '")';
