@@ -46,10 +46,14 @@ canvas {
 <script src="Chart.min.js"></script>
 
 <?php
-  $previous_cmd_trim = trim($_POST['command']);
-  $_POST['command'] = $previous_cmd_trim;
+  $previous_cmd_trim = '';
 
-  if (empty($previous_cmd_trim)) {
+  if (isset($_POST['command'])) {
+    $previous_cmd_trim = trim($_POST['command']);
+    $_POST['command'] = $previous_cmd_trim;
+  }
+
+  if (empty($previous_cmd_trim) && isset($_GET['command'])) {
     $previous_cmd_trim = trim($_GET['command']);
     $_POST['command'] = $previous_cmd_trim;
   }
@@ -418,8 +422,10 @@ function capturePostEnter(e) {
   var data = document.getElementById("message");
   if (data && data.value) {
     xhttp_dashinfo.send("command="+data.value);
-    document.getElementById("message").value = "";
+    document.getElementById("message").value = dashName + " [<?=$username?>] ";
   }
+
+  updateDash();
 
   return false;
 }

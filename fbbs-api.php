@@ -1,5 +1,9 @@
 <?php
 
+  if (!isset($_LOCAL_API_CALLS)) {
+    $_LOCAL_API_CALLS = false;
+  }
+
   function isSysOpQ() {
      $sysopResult = False;
      if (!empty($_COOKIE['username'])) {
