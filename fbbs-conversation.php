@@ -78,6 +78,7 @@ canvas {
 </span>
 <br>
 ||| <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</b>ystem (<b>fbbs</b>) ||\
+<?=$username?>
 <br>
 <u>|||...................................|//\</u>
 <br>
@@ -102,6 +103,15 @@ id="form1">
     <INPUT TYPE="submit" Value="|/\enter/\|">
 </FORM>
 <br>
+<FORM NAME="postmsg" METHOD="POST" ID="postmsg" ACTION="">
+  post message=>
+<?php
+  echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' [';
+  echo $username . '] "';
+  echo 'id="message" NAME="command" SIZE="60">';
+?>
+  <INPUT TYPE="Submit" Value="<-enter|" SIZE="7">
+</FORM>
 <div id="dash"></span>
 
 <script>
@@ -393,6 +403,33 @@ if (formElement.attachEvent) {
 }
 else {
   formElement.addEventListener("submit", captureFormEnter);
+}
+
+function capturePostEnter(e) {
+  if (e.preventDefault) e.preventDefault();
+
+  var dashName = document.getElementById("command").value;
+  var xhttp_dashinfo;
+  xhttp_dashinfo = new XMLHttpRequest();
+
+  xhttp_dashinfo.open("POST", "fbbs-api.php", true);
+  xhttp_dashinfo.setRequestHeader("Content-type",
+                                  "application/x-www-form-urlencoded");
+  var data = document.getElementById("message");
+  if (data && data.value) {
+    xhttp_dashinfo.send("command="+data.value);
+    document.getElementById("message").value = "";
+  }
+
+  return false;
+}
+
+var formElementMsg = document.getElementById("postmsg");
+if (formElementMsg.attachEvent) {
+  formElementMsg.attachEvent("submit", capturePostEnter);
+}
+else {
+  formElementMsg.addEventListener("submit", capturePostEnter);
 }
 
 var dashUpdater = setInterval(updateDash, 5000);
