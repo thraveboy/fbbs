@@ -115,7 +115,8 @@ id="form1">
 ?>
   <INPUT TYPE="Submit" Value="<-enter|" SIZE="7">
 </FORM>
-<div id="dash"></span>
+<br>
+<div id="dash"></div>
 
 <script>
 
@@ -231,6 +232,7 @@ function showDash(str_full) {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var ctx = document.getElementById("dashChart");
+      var dashHtml = "";
       var label_array = [];
       var label_sym_array = [];
       var data_array = [];
@@ -258,17 +260,20 @@ function showDash(str_full) {
           });
         }
         var new_value = msgValue(entry_obj).trim();
+        var new_id = msgId(entry_obj);
         var entry_time = parseInt(msgTimestamp(entry_obj));
         var timestamp_diff = (entry_time - current_time);
         var previous_diff = previous_time - entry_time;
         previous_time = entry_time;
         var new_length = new_value.length;
         label_array.push(new_value);
-        var new_data_entry = (timestamp_diff/60); // In minutes
+        var new_data_entry = Math.round((timestamp_diff/60)*1000)/1000; // In minutes
         data_array.push(new_data_entry);
         currentColor = getTimeDiffColor(previous_diff);
         color_array.push(currentColor);
         color_label_array.push(getTimeDiffBorder(previous_diff));
+        dashHtml += "@" + new_id + ":" + new_value + ":minsago(" +
+                    new_data_entry + ")<br>";
       });
       var dataStruct = {
         labels: label_array,
@@ -346,6 +351,7 @@ function showDash(str_full) {
               }
             }
           });
+        document.getElementById("dash").innerHTML = dashHtml;
     }
   }
   xhttp.open("POST", "fbbs-api.php", true);
