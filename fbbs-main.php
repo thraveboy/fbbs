@@ -4,7 +4,6 @@
 <style>
 body, input {
     font-family: monospace;
-    font-size: xx-large;
     background-color: black;
     color: green;
 }
@@ -57,6 +56,7 @@ p {
 |\\:::::::::::::::::::::::::::::::::::|
 <br>
 ||| <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</>ystem (<b>fbbs</b>) |
+<?=$username?>
 <br>
 |||...................................|
 <br>

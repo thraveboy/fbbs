@@ -4,7 +4,6 @@
 <style>
 body, input {
     font-family: monospace;
-    font-size: xx-large;
     background-color: black;
     color: green;
 }
@@ -54,14 +53,22 @@ p {
 
   $lastauth = last_auth_user();
 ?>
-|\\:::::::::::::::::::::::::::::::::::|\::::::::::::::::::
+|\\:::::::::::::::::::::::::::::::::::|
 <br>
-||| <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</>ystem (<b>fbbs</b>) ||: command :
-<span id="board_name"></span>
+||| <b>f</b>ury <b>b</b>ulletin <b>b</b>oard <b>s</>ystem (<b>fbbs</b>) |
+<?=$username?>
 <br>
-|||...................................|/:::::::::::::::...last online...
-<b>[<span id="last_active"><?=$lastauth?></span>]</b>...
-
+|||...................................|
+<br>
+\||::::::::::::::::::
+<br>
+|||: command : <span id="board_name"></span>
+<br>
+|||::::::::::::::::::
+<br>
+|||::::::::::::::::::
+<br>
+|||...last online...<b>[<span id="last_active"><?=$lastauth?></span>]</b>...
 <br>
 <br>
 
@@ -126,7 +133,7 @@ function messageOutput(msgObj) {
   var return_html = "";
   if (msgObj) {
     if (msgObj["value"] !=  undefined) {
-     return_html += "<u>[" + funPrefixes(2) + "]</u> " + msgObj["value"];
+     return_html += "-=> <b>" + msgObj["value"] + "</b>";
     }
   }
   return return_html;
