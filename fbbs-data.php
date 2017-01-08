@@ -4,7 +4,6 @@
 <style>
 body, input {
     font-family: monospace;
-    font-size: xx-large;
     background-color: black;
     color: green;
 }
@@ -54,7 +53,7 @@ p {
 
   $lastauth = last_auth_user();
 ?>
-|\\:::::::::::::::::::::::::::::::::::|\::::::::::::::::::
+|\\:::::::::::::::::::::::::::::::::::|\::::<?=$username?>:::::
 <span id="back_to_main">
   <FORM NAME="backtomain" METHOD="POST" ACTION="fbbs-main.php" style="display:inline">
     <INPUT TYPE="Submit"  Value="<<--back to main">
