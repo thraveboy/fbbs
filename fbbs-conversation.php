@@ -110,8 +110,7 @@ id="form1">
 <FORM NAME="postmsg" METHOD="POST" ID="postmsg" ACTION="">
   post message=>
 <?php
-  echo '<INPUT TYPE="Text" VALUE="' . $previous_command . ' [';
-  echo $username . '] "';
+  echo '<INPUT TYPE="Text" VALUE="" ';
   echo 'id="message" NAME="command" SIZE="60">';
 ?>
   <INPUT TYPE="Submit" Value="<-enter|" SIZE="7">
@@ -441,12 +440,10 @@ function capturePostEnter(e) {
                                   "application/x-www-form-urlencoded");
   var data = document.getElementById("message");
   if (data && data.value) {
-    xhttp_dashinfo.send("command="+data.value);
-    document.getElementById("message").value = dashName + " [<?=$username?>] ";
+    var commandString = "command="+dashName+" [<?=$username?>] "+data.value;
+    xhttp_dashinfo.send(commandString);
+    document.getElementById("message").value = "";
   }
-
-  updateDash();
-
   return false;
 }
 
@@ -458,7 +455,7 @@ else {
   formElementMsg.addEventListener("submit", capturePostEnter);
 }
 
-var dashUpdater = setInterval(updateDash, 5000);
+var dashUpdater = setInterval(updateDash, 10000);
 
 </script>
 
