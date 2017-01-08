@@ -144,6 +144,26 @@ function funPrefixes(prefix_length = 5) {
   return return_string;
 }
 
+function msgId(msgObj) {
+  var return_html = "";
+  if (msgObj) {
+    if (msgObj["id"] !=  undefined) {
+      return_html += msgObj["id"];
+    }
+  }
+  return return_html;
+}
+
+function msgIP(msgObj) {
+  var return_html = "";
+  if (msgObj) {
+    if (msgObj["ip"] !=  undefined) {
+      return_html += msgObj["ip"];
+    }
+  }
+  return return_html;
+}
+
 function msgValue(msgObj) {
   var return_html = "";
   if (msgObj) {

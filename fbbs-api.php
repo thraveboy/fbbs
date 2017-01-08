@@ -58,7 +58,7 @@
   $user_has_private_write_access = FALSE;
 
   function canWriteQ() {
-    return ((!$is_private_board) || $user_has_private_write_access ||
+    return (!($is_private_board) || $user_has_private_write_access ||
              isSysOpQ());
   }
 
