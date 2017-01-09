@@ -447,6 +447,12 @@ function capturePostEnter(e) {
   var xhttp_dashinfo;
   xhttp_dashinfo = new XMLHttpRequest();
 
+  xhttp_dashinfo.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      updateDash();
+    }
+  }
+
   xhttp_dashinfo.open("POST", "fbbs-api.php", true);
   xhttp_dashinfo.setRequestHeader("Content-type",
                                   "application/x-www-form-urlencoded");
@@ -456,6 +462,7 @@ function capturePostEnter(e) {
     xhttp_dashinfo.send(commandString);
     document.getElementById("message").value = "";
   }
+
   return false;
 }
 
@@ -472,9 +479,9 @@ function captureGetMsgEnter(e) {
   if (e.preventDefault) e.preventDefault();
 
   var dashName = document.getElementById("command").value;
-  var xhttp_dashinfo;
-  xhttp_dashinfo = new XMLHttpRequest();
-  xhttp_dashinfo.onreadystatechange = function() {
+  var xhttp_mdashinfo;
+  xhttp_mdashinfo = new XMLHttpRequest();
+  xhttp_mdashinfo.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("displaymsg").innerHTML = "";
       var current_time = (new Date()).getTime()/1000;
@@ -508,10 +515,12 @@ function captureGetMsgEnter(e) {
   }
 
   var msgId = document.getElementById("getmsgid").value.trim()
-  xhttp_dashinfo.open("POST", "fbbs-api.php", true);
-  xhttp_dashinfo.setRequestHeader("Content-type",
+  xhttp_mdashinfo.open("POST", "fbbs-api.php", true);
+  xhttp_mdashinfo.setRequestHeader("Content-type",
                                   "application/x-www-form-urlencoded");
-  xhttp_dashinfo.send("command="+dashName+" @"+msgId);
+  xhttp_mdashinfo.send("command="+dashName+" @"+msgId);
+
+  return false;
 }
 
 var formGetMsg = document.getElementById("getmsg");
@@ -522,7 +531,7 @@ else {
   formGetMsg.addEventListener("submit", captureGetMsgEnter);
 }
 
-var dashUpdater = setInterval(updateDash, 10000);
+var dashUpdater = setInterval(updateDash, 5000);
 
 </script>
 
